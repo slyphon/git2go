@@ -35,6 +35,9 @@ type Repository struct {
 	// Stashes represents the collection of stashes and can be used to
 	// save, apply and iterate over stash states in this repository.
 	Stashes StashCollection
+	// Reflogs represents the collection of reflogs and can be used to
+	// create, rename, and delete reflogs in this repository.
+	Reflogs ReflogCollection
 }
 
 func newRepositoryFromC(ptr *C.git_repository) *Repository {
@@ -46,6 +49,7 @@ func newRepositoryFromC(ptr *C.git_repository) *Repository {
 	repo.Notes.repo = repo
 	repo.Tags.repo = repo
 	repo.Stashes.repo = repo
+	repo.Reflogs.repo = repo
 
 	runtime.SetFinalizer(repo, (*Repository).Free)
 

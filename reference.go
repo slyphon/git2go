@@ -134,6 +134,7 @@ func (c *ReferenceCollection) HasLog(name string) (bool, error) {
 	return ret == 1, nil
 }
 
+
 // Dwim looks up a reference by DWIMing its short name
 func (c *ReferenceCollection) Dwim(name string) (*Reference, error) {
 	cname := C.CString(name)
@@ -278,6 +279,10 @@ func (v *Reference) Delete() error {
 	return nil
 }
 
+func (v *Reference) Log() (*Reflog, error) {
+	return v.repo.Reflogs.Read(v.Name())
+}
+
 func (v *Reference) Peel(t ObjectType) (*Object, error) {
 	var cobj *C.git_object
 
@@ -359,6 +364,7 @@ func (v *Reference) Free() {
 	runtime.SetFinalizer(v, nil)
 	C.git_reference_free(v.ptr)
 }
+
 
 type ReferenceIterator struct {
 	ptr  *C.git_reference_iterator
